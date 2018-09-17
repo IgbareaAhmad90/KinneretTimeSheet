@@ -1,0 +1,105 @@
+﻿@model IEnumerable<KinneretCollegeTimeSheet.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "חונכים";
+}
+
+
+
+
+@*asp-controller="Account" asp-action="Register"*@
+
+<h2>רשימת החונכים</h2>
+<div>
+    <div class="panel-heading" id="AddUserButton">
+        <a href="#" class="btn btn-primary col-lg-12" onclick="AddEditEmployee('/Users/Register')">הוספת חונך למערכת</a>
+    </div>
+    <hr />
+</div>
+
+<hr />
+<table class="table table-striped">
+    <thead style="text-align:center;">
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CertificateID)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Email)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </td>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody style="text-align:center;">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CertificateID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+
+                    @*<a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id"><i class="glyphicon glyphicon-wrench"></i> <text>  עדכן  </text> </a>*@
+
+                    <a href="#" class="btn btn-primary btn-sm" onclick='AddEditEmployee("/Users/Edit/@item.Id")'><i class="glyphicon glyphicon-wrench"></i> <text>  עדכן  </text></a>
+
+                    <a class="btn btn-success btn-sm" asp-action="Details" asp-route-id="@item.Id"><i class="glyphicon glyphicon-user"></i> <text>  פרטים  </text> </a>
+
+                    @*<a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id"><i class="glyphicon glyphicon-remove"></i> <text>  מחק  </text></a>*@
+
+                    <a href="#" class="btn btn-danger btn-sm" onclick='AddEditEmployee("/Users/Delete/@item.Id")'><i class="glyphicon glyphicon-remove"></i> <text>  מחק  </text></a>
+
+
+                    @*<a asp-controller="UserCourses" asp-action="Create" asp-route-id="@item.Id" asp-route-returnurl="@ViewData["ReturnUrl"]">Add Course</a> |*@
+
+                    <a class="btn btn-primary btn-sm" asp-controller="UserCourses" asp-action="GetCoursesByUser" asp-route-id=@item.Id>קורסים</a>
+
+                    <a class="btn btn-primary btn-sm" asp-controller="UserCourses" asp-action="Create" asp-route-id=@item.Id>הוספת קורס</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="myModal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">AddEdit Employee</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1">
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+<script>
+    var AddEditEmployee = function (url) {
+        $("#myModalBodyDiv1").load(url, function () {
+            $("#myModal1").modal("show");
+
+        })
+
+    }
+  
+</script>
+
+
+

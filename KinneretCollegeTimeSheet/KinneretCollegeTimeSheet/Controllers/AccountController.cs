@@ -204,42 +204,67 @@ namespace KinneretCollegeTimeSheet.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public IActionResult Register(string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+        //    return PartialView();
+        //}
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
+        //[HttpPost]
+        //public async Task<ActionResult> Register2Async(RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, CertificateID = model.CertificateID };
+        //        var result = await _userManager.CreateAsync(user, user.CertificateID);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation("User created a new account with password.");
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+        //            await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+        //            //await _signInManager.SignInAsync(user, isPersistent: false);
+        //            //_logger.LogInformation("User created a new account with password.");
+        //            return RedirectToAction(nameof(UsersController.Index), "Users");
+        //        }
+        //        AddErrors(result);
+        //    }
+        //    return PartialView("_AddUser", model);
+        //}
+
+
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Register([Bind("Email,CertificateID")] RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email, CertificateID = model.CertificateID };
+        //        var result = await _userManager.CreateAsync(user, user.CertificateID);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation("User created a new account with password.");
+
+        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+        //            await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+        //            //await _signInManager.SignInAsync(user, isPersistent: false);
+        //            //_logger.LogInformation("User created a new account with password.");
+        //            return RedirectToAction(nameof(UsersController.Index), "Users");
+        //        }
+        //        AddErrors(result);
+        //    }
+        //    return PartialView("_AddUser", model);
+        //}
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

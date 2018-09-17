@@ -1,0 +1,69 @@
+﻿@model IEnumerable<KinneretCollegeTimeSheet.Models.UserCourse>
+@{
+}
+<p>
+
+    @*<a asp-action="Create">Create New</a>*@
+    <a class="btn btn-primary btn-sm" asp-controller="UserCourses" asp-action="Create" asp-route-id="@ViewBag.UserID">הוספת קורס</a>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course.LecturerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course.LecturerEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.CertificateID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Email)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.LecturerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.LecturerEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.CertificateID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="Reports" asp-action="Index" asp-route-id="@item.Id">דיווחים</a>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

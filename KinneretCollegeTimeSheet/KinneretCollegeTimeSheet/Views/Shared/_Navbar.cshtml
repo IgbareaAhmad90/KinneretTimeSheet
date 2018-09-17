@@ -1,0 +1,27 @@
+﻿<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">@KinneretCollegeTimeSheet.Resource.Resource.KinneretCollegeTimeSheet</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @*<li><a asp-area="" asp-controller="Home" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Home</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="About">@KinneretCollegeTimeSheet.Resource.Resource.About</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Contact">@KinneretCollegeTimeSheet.Resource.Resource.Contact</a></li>*@
+
+                <li><a asp-area="" asp-controller="Users" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Users</a></li>
+                <li><a asp-area="" asp-controller="Courses" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Courses</a></li>
+                <li><a asp-area="" asp-controller="UserCourses" asp-action="Index">שידוך קורס</a></li>
+                <li><a asp-area="" asp-controller="Reports" asp-action="Index">דיווחים</a></li>
+
+            </ul>
+            @await Html.PartialAsync("_LoginPartial")
+        </div>
+    </div>
+</nav>

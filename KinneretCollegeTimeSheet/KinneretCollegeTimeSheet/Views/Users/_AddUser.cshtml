@@ -1,0 +1,70 @@
+﻿
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "הוספת חונך";
+}
+<form asp-action="Register" asp-controller="Account" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <p class="text-muted">הוספת חונך חדש למערת</p>
+    <div class="row" style="padding:2%">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <!---------------------------------------------------------------------------------------------------->
+        <!-- Email -->
+        <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="icon-user"></i>
+                </span>
+            </div>
+            <input asp-for="Email" class="form-control" type="email" placeholder="אימייל" />
+        </div>
+        @*<!---------------------------------------------------------------------------------------------------->
+            <!-- Password -->
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="icon-user"></i>
+                    </span>
+                </div>
+                <input asp-for="Password" class="form-control" type="password" placeholder="סיסמה" />
+            </div>
+            <!---------------------------------------------------------------------------------------------------->
+            <!-- ConfirmPassword -->
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="icon-user"></i>
+                    </span>
+                </div>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="אימות סיסמה" />
+            </div>*@
+        <!---------------------------------------------------------------------------------------------------->
+        <!-- CertificateIDCertificateID -->
+        <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="icon-user"></i>
+                </span>
+            </div>
+            <input asp-for="CertificateID" class="form-control" type="number" placeholder="ת.ז" />
+        </div>
+        <button class="btn btn-block btn-success" type="submit">צור חשבון</button>
+
+    </div>
+
+
+
+
+</form>
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

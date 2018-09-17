@@ -10,9 +10,18 @@ namespace KinneretCollegeTimeSheet.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public virtual DbSet<WebSiteLanguages> Language { get; set; }
+        public virtual DbSet<UserCourse> userCourse { get; set; }
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<Report> Report { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
+
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

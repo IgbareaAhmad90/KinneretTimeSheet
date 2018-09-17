@@ -1,0 +1,15 @@
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\bin\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.deps.json
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\bin\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.runtimeconfig.json
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\bin\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.runtimeconfig.dev.json
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\bin\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.dll
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\bin\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.pdb
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.csproj.CoreCompileInputs.cache
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.AssemblyInfoInputs.cache
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.AssemblyInfo.cs
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.dll
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.pdb
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.Resource.Resource.resources
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.csproj.GenerateResource.cache
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.Resource.Resource1.resources
+C:\Users\ig\source\repos\KinneretCollegeTimeSheet\KinneretCollegeTimeSheet\obj\Debug\netcoreapp2.0\KinneretCollegeTimeSheet.csprojAssemblyReference.cache

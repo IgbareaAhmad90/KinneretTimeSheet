@@ -1,0 +1,73 @@
+﻿@model KinneretCollegeTimeSheet.Models.ViewModels.CourseDetails
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.course.Key)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.course.Key)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.course.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.course.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.course.LecturerName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.course.LecturerName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.course.LecturerEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.course.LecturerEmail)
+        </dd>
+    </dl>
+</div>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.mentors[0].User.UserName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.mentors)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    <a asp-controller="Users" asp-action="Edit" asp-route-id="@item.User.Id">Edit</a> |
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.User.Id">Details</a> |
+                    <a asp-controller="Users" asp-action="Delete" asp-route-id="@item.User.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.course.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

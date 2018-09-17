@@ -1,0 +1,113 @@
+﻿@model KinneretCollegeTimeSheet.Models.ApplicationUser
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: right;
+        padding: 16px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+</style>
+<div>
+    <h4>פרופיל</h4>
+    <hr />
+    <div class="card">
+        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" style="width:20%; border-radius:20%">
+        <div class="container">
+            <h4 style="margin-top:4%">
+
+                <b>
+                    <dl class="dl-horizontal">
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+                    </dl>
+
+                    <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @Html.DisplayFor(model => model.UserName)!</a>
+
+                    <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage"> עדכן פרטי הפרופיל</a>
+                </b>
+            </h4>
+           
+            <hr />
+
+            <p>
+                פרטי המשתמש
+            </p>
+            <table>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.CertificateID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.CertificateID)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </td>
+                </tr>
+            </table>
+            <p>
+                <a asp-action="Index">עוד פרטים</a>
+            </p>
+
+
+
+
+        </div>
+    </div>
+</div>
+<div>
+
+    <div  id="myModalBodyDiv1">
+
+
+    </div>
+
+
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-controller="Users" asp-action="Index">Back to List</a>
+</div>
+
+
+
+<script>
+
+
+
+    window.onload = function () {
+        $("#myModalBodyDiv1").load("/UserCourses/GetCoursesByUser/@ViewBag.UserId")
+    }
+
+
+   
+
+
+
+</script>
+
