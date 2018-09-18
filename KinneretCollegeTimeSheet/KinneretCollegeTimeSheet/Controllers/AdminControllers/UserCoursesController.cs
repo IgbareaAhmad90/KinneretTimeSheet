@@ -59,20 +59,20 @@ namespace KinneretCollegeTimeSheet.Controllers
 
             return View(userCourse);
         }
-        // GET: UserCourses/Details/5
-        public async Task<IActionResult> GetDetailsByUser(int id)
-        {
-            var userCourse = await _context.userCourse
-                .Include(u => u.Course)
-                .Include(u => u.User)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (userCourse == null)
-            {
-                return NotFound();
-            }
+        //// GET: UserCourses/Details/5
+        //public async Task<IActionResult> GetDetailsByUser(int id)
+        //{
+        //    var userCourse = await _context.userCourse
+        //        .Include(u => u.Course)
+        //        .Include(u => u.User)
+        //        .SingleOrDefaultAsync(m => m.Id == id);
+        //    if (userCourse == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return PartialView(userCourse);
-        }
+        //    return PartialView(userCourse);
+        //}
 
 
         // GET: UserCourses/Create
@@ -95,6 +95,7 @@ namespace KinneretCollegeTimeSheet.Controllers
                 _context.Add(new UserCourse { CourseID = userCourse.CourseID, UserID = userCourse.UserID });
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
             return View(userCourse);
         }

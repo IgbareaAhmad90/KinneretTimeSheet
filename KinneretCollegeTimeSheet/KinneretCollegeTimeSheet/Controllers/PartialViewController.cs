@@ -2,92 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KinneretCollegeTimeSheet.Data;
+using KinneretCollegeTimeSheet.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KinneretCollegeTimeSheet.Controllers
 {
     public class PartialViewController : Controller
     {
-        // GET: PartialView
-        public ActionResult Index()
+
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+
+        public PartialViewController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
-            return View();
+            _userManager = userManager;
+            _context = context;
         }
 
-        // GET: PartialView/Details/5
-        public ActionResult Details(int id)
+
+        [Authorize]
+        public async Task<IActionResult> MyCourses()
         {
-            return View();
+            var userID = await _userManager.GetUserAsync(User);
+
+            return View(await _context.userCourse
+                         .Include(u => u.Course)
+                         .Include(u => u.User)
+                         .Where(m => m.UserID == userID.Id)
+                         .ToListAsync());
         }
 
-        // GET: PartialView/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: PartialView/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: PartialView/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: PartialView/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PartialView/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PartialView/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

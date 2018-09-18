@@ -1,0 +1,75 @@
+﻿@model IEnumerable<KinneretCollegeTimeSheet.Models.UserCourse>
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: right;
+        padding: 16px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+</style>
+@{
+
+
+ }
+<div>
+    <hr />
+    <div class="card">
+        <div class="container">
+            <p>
+                הקורסים שלי
+            </p>
+            <table>
+
+
+                <tr>
+                    <td>שם הקורס</td>
+                    <td>שם המרצה</td>
+                    <td>אימייל המרצה</td>
+                    <td> </td>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CourseID)
+                        </td>
+
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.Course.LecturerEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course.LecturerEmail)
+                        </td>
+
+                        <td>
+                            <a asp-controller="UserCourses" asp-action="Edit" asp-route-id="@item.Id">עדכן</a> |
+                            <a asp-controller="UserCourses" asp-action="Details" asp-route-id="@item.Id">פרטים</a> |
+                            <a asp-controller="UserCourses" asp-action="Delete" asp-route-id="@item.Id">מחק</a> |
+                            <a asp-controller="UserCourses" asp-action="Delete" asp-route-id="@item.Id">דיווחים</a>
+
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <p>
+                <a asp-action="Index">עוד פרטים</a>
+            </p>
+
+        </div>
+    </div>
+</div>
+
+

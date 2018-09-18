@@ -1,0 +1,28 @@
+﻿
+@model IEnumerable<KinneretCollegeTimeSheet.Models.UserCourse>;
+
+        <div class="card">
+            <div class="container">
+                <p>
+                    הקורסים שלי
+                </p>
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                    <div class="col-lg-3 col-md-3" style="margin:1%; border:solid; padding:3%; border-radius:9%; border-color:dodgerblue;">
+                        <h1>@item.Course.Name</h1><hr />
+
+                        <h5>@item.User.UserName</h5>
+                        <h5>@item.Course.LecturerName</h5>
+                        <h5>@item.Course.LecturerEmail</h5>
+                        <a class="btn btn-default" asp-controller="Reports" asp-action="Index" asp-route-id="@item.Id">דיווחים</a>
+
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    
+

@@ -15,10 +15,25 @@
         <li><a asp-area="" asp-controller="Home" asp-action="About">@KinneretCollegeTimeSheet.Resource.Resource.About</a></li>
         <li><a asp-area="" asp-controller="Home" asp-action="Contact">@KinneretCollegeTimeSheet.Resource.Resource.Contact</a></li>*@
 
-                <li><a asp-area="" asp-controller="Users" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Users</a></li>
-                <li><a asp-area="" asp-controller="Courses" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Courses</a></li>
-                <li><a asp-area="" asp-controller="UserCourses" asp-action="Index">שידוך קורס</a></li>
-                <li><a asp-area="" asp-controller="Reports" asp-action="Index">דיווחים</a></li>
+
+                @inject SignInManager<ApplicationUser> _SignInManager
+                @inject UserManager<ApplicationUser> _UserManager
+                @if (_SignInManager.IsSignedIn(User))
+                {
+                    bool isAdmin = User.IsInRole("Admin");
+
+                    if (isAdmin)
+                    {
+                        <li><a asp-area="" asp-controller="Users" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Users</a></li>
+                        <li><a asp-area="" asp-controller="Courses" asp-action="Index">@KinneretCollegeTimeSheet.Resource.Resource.Courses</a></li>
+                        <li><a asp-area="" asp-controller="UserCourses" asp-action="Index">שידוך קורס</a></li>
+                    }
+
+                    <li><a asp-area="" asp-controller="PartialView" asp-action="MyCourses">הקורסים שלי</a></li>
+                    <li><a asp-area="" asp-controller="Reports" asp-action="Index">דיווחים</a></li>
+
+
+                }
 
             </ul>
             @await Html.PartialAsync("_LoginPartial")

@@ -8,15 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using KinneretCollegeTimeSheet.Data;
 using KinneretCollegeTimeSheet.Models;
 using KinneretCollegeTimeSheet.Models.RegistrationModels;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace KinneretCollegeTimeSheet.Controllers
 {
+    [Authorize]
     public class ReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReportsController(ApplicationDbContext context)
+        public ReportsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -24,11 +30,39 @@ namespace KinneretCollegeTimeSheet.Controllers
         // GET: Reports
         public async Task<IActionResult> Index(int? Id)
         {
+
             ViewData["Id"] = Id;
-            var applicationDbContext = _context.Report
-                .Where(r => r.UserCourseId == Id);
-            return View(await applicationDbContext.ToListAsync());
+
+            bool isAdmin = User.IsInRole("Admin");
+            if (isAdmin)
+            {
+                return View(await _context.Report.Where(r => r.UserCourseId == Id).ToListAsync());
+            }
+
+
+            // get User
+            var user = await _userManager.GetUserAsync(User);
+            // check if the Course About me 
+            var userCourse = _context.userCourse.Where(m => m.Id == Id && m.User.Id == user.Id);
+            if(userCourse.Count() == 0)
+            {
+                //TODO Create ErrorPage
+                return NotFound();
+            }
+
+            return View(await _context.Report.Where(r => r.UserCourseId == Id).ToListAsync());
         }
+
+        //    [Authorize(Roles = "Admin")]
+        //// GET: Reports
+        //public async Task<IActionResult> Index(int? Id)
+        //{
+        //    ViewData["Id"] = Id;
+        //    var applicationDbContext = _context.Report
+        //        .Where(r => r.UserCourseId == Id);
+        //    return View(await applicationDbContext.ToListAsync());
+        //}
+
 
         // GET: Reports/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -50,9 +84,9 @@ namespace KinneretCollegeTimeSheet.Controllers
         }
 
         // GET: Reports/Create
-        public IActionResult Create(int UserCourseId)
+        public IActionResult Create(int id)
         {
-            ViewData["UserCourseId"] = UserCourseId;
+            ViewData["UserCourseId"] = id;
             return View();
         }
 
@@ -63,12 +97,13 @@ namespace KinneretCollegeTimeSheet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,type,date,timeStart,timeEnd,discription,UserCourseId")] Report report)
         {
-            
+            report.Id = 0;
             if (ModelState.IsValid)
             {
                 _context.Add(report);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Index", new RouteValueDictionary(new { controller = "Reports", action = "Index", Id = report.UserCourseId }));
             }
             return View(report);
         }
