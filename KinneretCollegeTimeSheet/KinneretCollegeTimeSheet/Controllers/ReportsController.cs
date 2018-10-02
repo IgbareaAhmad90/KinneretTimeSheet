@@ -26,7 +26,6 @@ namespace KinneretCollegeTimeSheet.Controllers
             _context = context;
         }
 
-
         // GET: Reports
         public async Task<IActionResult> Index(int? Id)
         {
@@ -38,7 +37,6 @@ namespace KinneretCollegeTimeSheet.Controllers
             {
                 return View(await _context.Report.Where(r => r.UserCourseId == Id).ToListAsync());
             }
-
 
             // get User
             var user = await _userManager.GetUserAsync(User);
@@ -90,6 +88,16 @@ namespace KinneretCollegeTimeSheet.Controllers
             return View();
         }
 
+        public bool CheckHafefa(int ts1,int tf1, int ts2 ,int tf2) {
+
+
+            if (ts2 - tf1 < 0 || ts1 - tf2 < 0)
+                return false;
+
+            return true ;
+        }
+
+
         // POST: Reports/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -97,6 +105,21 @@ namespace KinneretCollegeTimeSheet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,type,date,timeStart,timeEnd,discription,UserCourseId")] Report report)
         {
+            //TODO Check if have Report with the same time 
+            var user = await _userManager.GetUserAsync(User);
+
+
+
+            var list = _context.Report
+                 .Where(d => d.date == report.date)
+                 .Where(u => u.UserCourse.UserID == user.Id)
+                 .Where(t=> (t.timeStart.Hour - report.timeEnd.Hour <0) && (report.timeStart.Hour -t.timeEnd.Hour  <0) );
+
+            if (list.Count() > 0)
+            {
+                return NotFound();
+            }
+
             report.Id = 0;
             if (ModelState.IsValid)
             {

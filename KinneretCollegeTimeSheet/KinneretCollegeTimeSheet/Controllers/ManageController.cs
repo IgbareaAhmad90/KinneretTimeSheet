@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 using KinneretCollegeTimeSheet.Models;
 using KinneretCollegeTimeSheet.Models.ManageViewModels;
 using KinneretCollegeTimeSheet.Services;
+using KinneretCollegeTimeSheet.Data;
+using Microsoft.EntityFrameworkCore;
+using KinneretCollegeTimeSheet.Views.Manage;
 
 namespace KinneretCollegeTimeSheet.Controllers
 {
@@ -20,6 +23,7 @@ namespace KinneretCollegeTimeSheet.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -34,13 +38,15 @@ namespace KinneretCollegeTimeSheet.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
         }
 
         [TempData]
@@ -79,8 +85,21 @@ namespace KinneretCollegeTimeSheet.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"שגיאה : מספר משתמש לא תקין'{_userManager.GetUserId(User)}'.");
             }
+
+
+
+            var UserName = user.UserName;
+            if (model.Username != UserName)
+            {
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, model.Username);
+                if (!setUserNameResult.Succeeded)
+                {
+                    throw new ApplicationException($"שגיאה : לא עודכן שם המשתמש בעל מספר  '{user.Id}'.'{setUserNameResult.ToString()}'"); //Unexpected error occurred setting email for user with ID
+                }
+            }
+
 
             var email = user.Email;
             if (model.Email != email)
@@ -88,7 +107,7 @@ namespace KinneretCollegeTimeSheet.Controllers
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"שגיאה : לא עודן אימייל המשתמש בעל מספר '{user.Id}'.");
                 }
             }
 
@@ -98,11 +117,11 @@ namespace KinneretCollegeTimeSheet.Controllers
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"שגיאה : לא עודן מספר טלפון המשתמש בעל מספר'{user.Id}'.");
                 }
             }
 
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "עודכן הפרופיל בהצלחה";
             return RedirectToAction(nameof(Index));
         }
 
@@ -118,7 +137,7 @@ namespace KinneretCollegeTimeSheet.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"אין אפשרות לכניסה עם מספר משתמש ! '{_userManager.GetUserId(User)}'.");
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -126,9 +145,75 @@ namespace KinneretCollegeTimeSheet.Controllers
             var email = user.Email;
             await _emailSender.SendEmailConfirmationAsync(email, callbackUrl);
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "אימות אימייל נשלח. בבקשה תבדוק את האימייל ולחץ על הקישור לאימות חשבון "; //Verification email sent. Please check your email.
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewCourses()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            return View(await _context.userCourse
+                         .Include(u => u.Course)
+                         .Include(u => u.User)
+                         .Where(m => m.UserID == user.Id)
+                         .ToListAsync());
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> LastReports()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var hasPassword = await _userManager.HasPasswordAsync(user);
+            if (!hasPassword)
+            {
+                return RedirectToAction(nameof(SetPassword));
+            }
+
+            var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LastReports(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                AddErrors(changePasswordResult);
+                return View(model);
+            }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            _logger.LogInformation("User changed their password successfully.");
+            StatusMessage = "Your password has been changed.";
+            return RedirectToAction(nameof(ChangePassword));
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
@@ -144,7 +229,6 @@ namespace KinneretCollegeTimeSheet.Controllers
             {
                 return RedirectToAction(nameof(SetPassword));
             }
-
             var model = new ChangePasswordViewModel { StatusMessage = StatusMessage };
             return View(model);
         }

@@ -90,12 +90,14 @@ namespace KinneretCollegeTimeSheet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AddUserCourseModel userCourse)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(new UserCourse { CourseID = userCourse.CourseID, UserID = userCourse.UserID });
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-
+                ViewData["ShowMessage"] = "הוספת קורס התבצעה בהצלחה";
+                //To Do Redirect to Action Courses Details  UserID
+               return RedirectToAction(nameof(UsersController.Index), "Users");
             }
             return View(userCourse);
         }
@@ -128,7 +130,6 @@ namespace KinneretCollegeTimeSheet.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -147,6 +148,8 @@ namespace KinneretCollegeTimeSheet.Controllers
                         throw;
                     }
                 }
+                ViewData["ShowMessage"] = "עדכון קורס התבצעה בהצלחה";
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseID"] = new SelectList(_context.Course, "Id", "LecturerEmail", userCourse.CourseID);

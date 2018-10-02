@@ -21,5 +21,7 @@ namespace KinneretCollegeTimeSheet.Models
 
         public  ICollection<Report> reports { get; set; }
 
+        public string StatusMessage { get; set; }
+
     }
 }

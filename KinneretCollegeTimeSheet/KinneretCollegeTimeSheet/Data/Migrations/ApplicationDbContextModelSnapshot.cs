@@ -169,6 +169,8 @@ namespace KinneretCollegeTimeSheet.Data.Migrations
 
                     b.Property<int>("CourseID");
 
+                    b.Property<string>("StatusMessage");
+
                     b.Property<string>("UserID")
                         .IsRequired();
 

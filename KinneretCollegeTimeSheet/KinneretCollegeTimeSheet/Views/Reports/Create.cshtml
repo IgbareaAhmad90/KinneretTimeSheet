@@ -10,10 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="CreateReportForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-      
-
             <div class="form-group">
                 <label asp-for="type" class="control-label"></label>
                 <select asp-for="type" class="form-control">
@@ -24,24 +22,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="date" class="control-label"></label>
-                <input asp-for="date" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <input asp-for="date" class="form-control" type="date" autofocus="autofocus" value="@DateTime.Now.ToString("yyyy-MM-dd")" id="date"/>
                 <span asp-validation-for="date" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="timeStart" class="control-label"></label>
-                <input asp-for="timeStart" class="form-control" type="time" value="@DateTime.Now.ToString("hh:mm")" />
-                <span asp-validation-for="timeStart" class="text-danger"></span>
+                <input asp-for="timeStart" class="form-control" type="time" value="@DateTime.Now.ToString("hh:mm")"  id="timeStart" onchange="TimeStartOnChnageElement()"/>
+                <span asp-validation-for="timeStart" class="text-danger" id="timeStartMessage"></span>
             </div>
             <div class="form-group">
                 <label asp-for="timeEnd" class="control-label"></label>
-                <input asp-for="timeEnd" class="form-control" type="time" value="@DateTime.Now.ToString("hh:mm")" />
-                <span asp-validation-for="timeEnd" class="text-danger"></span>
+                <input asp-for="timeEnd" class="form-control" type="time" value="@DateTime.Now.ToString("hh:mm")" id="timeEnd" />
+                <span asp-validation-for="timeEnd" class="text-danger" id="timeEndMessage"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="discription" class="control-label"></label>
-                <input asp-for="discription" class="form-control" placeholder="תיעוד" />
-                <span asp-validation-for="discription" class="text-danger"></span>
+                <input asp-for="discription" class="form-control" placeholder="תיעוד" id="discription" />
+                <span asp-validation-for="discription" class="text-danger" id="discriptionMessage"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserCourseId" class="control-label"></label>
@@ -49,7 +47,7 @@
                 <span asp-validation-for="UserCourseId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input  value="Create" onclick="validationValues()" class="btn btn-default" />
             </div>
         </form>
     </div>
@@ -58,6 +56,98 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script>
+    function _(ElementID) {
+        return document.getElementById(ElementID);
+    } // shortcut for getElementById('') ->  _('')
 
+    var FirstTimeStartChangeflag = true;
+    function TimeStartOnChnageElement() {
+
+        if (FirstTimeStartChangeflag) {
+            var start = _("timeStart").value;
+            start = start.split(":");
+
+            _("timeStart").value = start[0] + ":00";
+            FirstTimeStartChangeflag = false;
+        }
+
+      
+    }
+
+
+
+    //function timeStartOnChange() {
+    //    var TimeStartElement = _("timeStart");
+
+    //    var TimeStartValue = TimeStartElement.value;
+
+    //    var Hours = TimeStartValue.split(":")[0];
+    //    var Min = TimeStartValue.split(":")[1];
+
+    //    var NewTime = Hours + ":00";
+
+    //    TimeStartObject.setAttribute("value", NewTime);
+
+
+    //}
+
+
+
+    function validationValues() {
+        var result = CheckTime();
+        if (result) {
+            submitForm();
+        }
+    }
+
+    function submitForm() {
+        _("CreateReportForm").method = "post";
+        _("CreateReportForm").submit();
+    }
+
+    function CheckTime(start, end) {
+
+        _("timeStartMessage").innerHTML = "";
+        _("timeEndMessage").innerHTML = "";
+        _("discriptionMessage").innerHTML = "";
+
+
+
+        var start = _("timeStart").value;
+        var end = _("timeEnd").value; 
+        start = start.split(":");
+        end = end.split(":");
+        var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+        var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+        var diff = endDate.getTime() - startDate.getTime();
+        var hours = Math.floor(diff / 1000 / 60 / 60);
+        diff -= hours * 1000 * 60 * 60;
+        var minutes = Math.floor(diff / 1000 / 60);
+
+        // If using time pickers with 24 hours format, add the below line get exact hours
+        var f = true;
+        if (hours < 0) {
+            _("timeStartMessage").innerHTML = "זמן התחלה אחרי זמן סיום";
+            hours = hours + 24;
+            f = false;
+        }
+
+        if (minutes == 0 && hours == 0) {
+            _("timeEndMessage").innerHTML = "הכנס זמן סיום המפגש";
+            f = false;
+        }
+
+        if (!_("discription").value) {
+            _("discriptionMessage").innerHTML = "הכנס תיעוד המפגש";
+            f = false;
+        }
+
+        return f;
+        // (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
+
+    }
+
+</script>
 
 

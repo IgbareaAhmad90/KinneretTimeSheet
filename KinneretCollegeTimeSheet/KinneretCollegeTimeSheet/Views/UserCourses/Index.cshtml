@@ -6,6 +6,32 @@
 
 <h2>Index</h2>
 
+
+<table class="table table-bordered">
+    <tr>
+        <td>
+            x
+        </td>
+
+
+    </tr>
+    <tr>
+        <td>
+            x
+        </td>
+        <td>
+            y
+        </td>
+        <td>
+            z
+        </td>
+    </tr>
+
+
+
+</table>
+
+
 <p>
     @*<a asp-action="Create">Create New</a>*@
 </p>
@@ -35,35 +61,40 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.LecturerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Course.LecturerEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.CertificateID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                <a asp-controller="Reports" asp-action="Index" asp-route-id="@item.CourseID">דיווחים</a>
+        @*TODO Sourt IEnumerable by user Name / Email *@
 
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.LecturerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.LecturerEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.CertificateID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-controller="Reports" asp-action="Index" asp-route-id="@item.CourseID">דיווחים</a>
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

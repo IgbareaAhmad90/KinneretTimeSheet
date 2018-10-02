@@ -5,9 +5,11 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<div>
+<div class="container">
+    
+    
 
-    <form id="myForm">
+    <form id="myForm" class="container">
 
         @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })
 
@@ -53,7 +55,3 @@
 
 </script>
 
-
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}

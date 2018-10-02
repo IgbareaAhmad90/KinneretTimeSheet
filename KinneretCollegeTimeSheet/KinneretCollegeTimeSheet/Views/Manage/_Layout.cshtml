@@ -1,11 +1,38 @@
-﻿@{ 
+﻿@{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
+@inject UserManager<ApplicationUser> UserManager
 
-<h2>Manage your account</h2>
-
+<br />
+<h2>ניהול חשבון</h2>
+@{ 
+    var user = await UserManager.GetUserAsync(User);
+}
 <div>
-    <h4>Change your account settings</h4>
+    <h5>חשבון משתמש :  @user.UserName  |  ת.ז :  @user.CertificateID |   פלפון :  @user.PhoneNumber  </h5>
+    <h5></h5>
+    <h5> </h5>
+    @inject SignInManager<ApplicationUser> _SignInManager
+    @inject UserManager<ApplicationUser> _UserManager
+    @if (_SignInManager.IsSignedIn(User))
+    {
+        bool isAdmin = User.IsInRole("Admin");
+
+        if (isAdmin)
+        {
+            <h5> משתמש : מנהל </h5>
+
+        }
+        else
+        {
+            <h5> משתמש : חונך </h5>
+
+
+        }
+
+    }
+
+
     <hr />
     <div class="row">
         <div class="col-md-3">
@@ -20,4 +47,4 @@
 @section Scripts {
     @RenderSection("Scripts", required: false)
 }
-        
+

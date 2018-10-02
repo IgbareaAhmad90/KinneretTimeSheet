@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<KinneretCollegeTimeSheet.Models.UserCourse>
 
 <br /><br />
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
 
-@{
+
+@*@{
     var e = Model.FirstOrDefault();
 }
 
@@ -14,8 +12,8 @@
     User Name : @e.User <br />
     ID : @e.User.CertificateID <br />
     Count : @Model.Count()
-</p>
-<table class="table">
+</p>*@
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -55,7 +53,7 @@
         </tr>
         }
     </tbody>
-</table>
+</table>*@
 
 
 

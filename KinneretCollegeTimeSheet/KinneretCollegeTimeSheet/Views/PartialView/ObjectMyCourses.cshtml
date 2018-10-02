@@ -3,19 +3,21 @@
 
         <div class="card">
             <div class="container">
-                <p>
+                <h3>
                     הקורסים שלי
-                </p>
+                </h3>
                 <div class="row">
                     @foreach (var item in Model)
                     {
                     <div class="col-lg-3 col-md-3" style="margin:1%; border:solid; padding:3%; border-radius:9%; border-color:dodgerblue;">
-                        <h1>@item.Course.Name</h1><hr />
+                        <h4>@item.Course.Name</h4><hr />
 
                         <h5>@item.User.UserName</h5>
                         <h5>@item.Course.LecturerName</h5>
                         <h5>@item.Course.LecturerEmail</h5>
                         <a class="btn btn-default" asp-controller="Reports" asp-action="Index" asp-route-id="@item.Id">דיווחים</a>
+                        <a class="btn btn-default" asp-controller="Reports" asp-action="Create" asp-route-id="@item.Id">הוספת דיווח</a>
+
 
                     </div>
                     }

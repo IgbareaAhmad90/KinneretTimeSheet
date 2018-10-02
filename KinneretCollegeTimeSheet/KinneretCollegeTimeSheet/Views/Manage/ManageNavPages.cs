@@ -14,6 +14,11 @@ namespace KinneretCollegeTimeSheet.Views.Manage
         public static string Index => "Index";
 
         public static string ChangePassword => "ChangePassword";
+        
+        // View Courses
+        public static string ViewCourses => "ViewCourses";
+
+        public static string LastReports => "LastReports";
 
         public static string ExternalLogins => "ExternalLogins";
 
@@ -22,6 +27,10 @@ namespace KinneretCollegeTimeSheet.Views.Manage
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
+
+        public static string ViewCoursesNavClass(ViewContext viewContext) => PageNavClass(viewContext, ViewCourses);
+
+        public static string LastReportsNavClass(ViewContext viewContext) => PageNavClass(viewContext, LastReports);
 
         public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
 

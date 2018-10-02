@@ -1,67 +1,130 @@
 ﻿@model IEnumerable<KinneretCollegeTimeSheet.Models.Course>
 
-@{
-    ViewData["Title"] = "Index";
-}
 
 <h2>רשימת הקורסים במערכת</h2>
+<style type="text/css">
+    .no-js #loader {
+        display: none;
+    }
 
-<p>
-</p>
-<p>
-</p>
+    .js #loader {
+        display: block;
+        position: absolute;
+        left: 100px;
+        top: 0;
+    }
+
+    .se-pre-con {
+        margin-top:3%;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url(Loading.gif) center no-repeat #fff;
+    }
+</style>
+
+<div class="se-pre-con" id="loading"></div>
 <div>
-    <div class="panel-heading" >
+    <div class="panel-heading">
         <a class="btn btn-primary col-lg-6" onclick="CourseFunction('/Courses/Create')">הוספת קורס למערכת</a>
-        <a class="btn btn-success col-lg-6" >הוספת קובץ קורסים למערכת</a>
+        <a class="btn btn-success col-lg-6" asp-controller="ImportExport" asp-action="Index">הוספת קובץ קורסים למערכת</a>
     </div>
     <hr />
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Key)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LecturerName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LecturerEmail)
-            </th>
+<!-- DataTables Example -->
+<div class="card mb-3">
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Key)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LecturerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LecturerEmail)
-            </td>
-            <td>
-                <a href="#" class="btn btn-primary btn-sm" onclick='CourseFunction("/Courses/Edit/@item.Id")'><i class="glyphicon glyphicon-wrench"></i> <text>  עדכן  </text></a>
-                <a class="btn btn-success btn-sm" asp-action="Details" asp-route-id="@item.Id"><i class="glyphicon glyphicon-user"></i> <text>  פרטים  </text> </a>
-                <a href="#" class="btn btn-danger btn-sm" onclick='CourseFunction("/Courses/Delete/@item.Id")'><i class="glyphicon glyphicon-remove"></i> <text>  מחק  </text></a>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Key)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LecturerName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LecturerEmail)
+                        </th>
 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Key)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LecturerName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LecturerEmail)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Key)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LecturerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LecturerEmail)
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm" onclick='CourseFunction("/Courses/Edit/@item.Id")'><i class="glyphicon glyphicon-wrench"></i> <text>  עדכן  </text></a>  
+                                <a class="btn btn-success btn-sm"  onclick='CourseFunction("/Courses/Details/@item.Id")'><i class="glyphicon glyphicon-user"></i> <text>  פרטים  </text> </a>
+                                <a href="#" class="btn btn-danger btn-sm" onclick='CourseFunction("/Courses/Delete/@item.Id")'><i class="glyphicon glyphicon-remove"></i> <text>  מחק  </text></a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>
+
+<div id="xyz">
+
+
+</div>
+<script>
+ 
+
+    $(document).ready(function () {
+        $("#dataTable").DataTable();
+        $('#loading').slideToggle();
+    });
+</script>
+
+
+
+<table id="tableID" class="table"></table>
 
 
 <div class="modal fade" id="myModal1">
@@ -77,12 +140,58 @@
     </div>
 </div>
 
+
+
 <script>
     var CourseFunction = function (url) {
-        $("#myModalBodyDiv1").load(url, function () {
-            $("#myModal1").modal("show");
+   
 
-        })
+        GetAjax(url, "myModalBodyDiv1");
+        $("#myModal1").modal("show");
 
     }
+
+
+
+    /********************************************************    Ajax   ************************************************/
+    function createRequst() {
+        var xmlHttp;
+        try {
+            if (window.XMLHttpRequest)
+                xmlHttp = new XMLHttpRequest();
+            else {
+                xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                if (!xmlHttp)
+                    xmlHttp = new ActiveXObject("Msxml2.XMLHTTP.3.0");
+                if (!xmlHttp)
+                    xmlHttp = new ActiveXObject("Msxml2.XMLHTTP.6.0");
+            }
+        }
+
+        catch (e) {
+            _("Jax").innerHTML = e.description.toString();
+        }
+        return xmlHttp;
+    } // 
+    function GetNamePage(NamePage) {
+        var i = 0;
+        var str = "";
+        for (i = 0; NamePage[i] != '.'; i++) {
+            str += NamePage[i];
+        }
+        return str;
+    }  // Not Working 
+    function GetAjax(Page, Div) {
+        var xmlhttp;
+        xmlhttp = createRequst();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState != 4)
+                _(Div).innerHTML = "<center><img src='CssTemplate/loading.gif'/></center>" // View Image Loading 
+            if (this.readyState == 4 & this.status == 200) // While Not Ready 
+                _(Div).innerHTML = this.responseText;
+        }
+        xmlhttp.open("GET", Page, true);
+        xmlhttp.send();
+    }
+
 </script>

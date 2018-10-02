@@ -26,9 +26,11 @@ namespace KinneretCollegeTimeSheet.Controllers
         }
 
 
+
         [Authorize]
         public async Task<IActionResult> MyCourses()
         {
+
             var userID = await _userManager.GetUserAsync(User);
 
             return View(await _context.userCourse
@@ -36,6 +38,23 @@ namespace KinneretCollegeTimeSheet.Controllers
                          .Include(u => u.User)
                          .Where(m => m.UserID == userID.Id)
                          .ToListAsync());
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyProfile()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+
+            var userCourse = await _context.Users
+                .Include(b => b.UserCourses)
+                .SingleOrDefaultAsync(m => m.Id == user.Id);
+            if (userCourse == null)
+            {
+                return NotFound();
+            }
+
+            return View(userCourse);
         }
 
 

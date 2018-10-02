@@ -19,12 +19,14 @@ namespace KinneretCollegeTimeSheet
 
         public static IList<WebSiteLanguages> List { get; set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration,IHostingEnvironment env)
         {
             Configuration = configuration;
-            
-        }
+            Env = env;
 
+
+        }
+        public IHostingEnvironment Env { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.

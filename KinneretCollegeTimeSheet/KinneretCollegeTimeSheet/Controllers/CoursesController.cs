@@ -25,7 +25,8 @@ namespace KinneretCollegeTimeSheet.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            Startup.List = await _context.Language.ToListAsync();
+            //            return View(await _context.Course.Skip(100).Take(100).ToListAsync());
+
 
             return View(await _context.Course.ToListAsync());
         }
@@ -52,7 +53,7 @@ namespace KinneretCollegeTimeSheet.Controllers
                 return NotFound();
             }
 
-            return View(new CourseDetails(course, Mentors));
+            return PartialView(new CourseDetails(course, Mentors));
         }
 
         // GET: Courses/Create
@@ -74,7 +75,7 @@ namespace KinneretCollegeTimeSheet.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Courses/Edit/5

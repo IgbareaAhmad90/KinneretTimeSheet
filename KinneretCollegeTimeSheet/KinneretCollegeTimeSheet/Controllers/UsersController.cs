@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,10 +19,7 @@ namespace KinneretCollegeTimeSheet.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsersController(
-            UserManager<ApplicationUser> userManager,
-            ApplicationDbContext context
-            )
+        public UsersController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _context = context;
@@ -31,6 +28,7 @@ namespace KinneretCollegeTimeSheet.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            ViewData["ShowMessage"] = "Error";
 
             return View(await _context.Users
                 .ToListAsync());
@@ -39,6 +37,9 @@ namespace KinneretCollegeTimeSheet.Controllers
         // GET: Users/Details/5
         public async Task<IActionResult> Details(string id)
         {
+
+            ViewData["ShowMessage"] = "Details";
+
             ViewData["UserId"] = id;
 
             if (id == null)
@@ -53,8 +54,7 @@ namespace KinneretCollegeTimeSheet.Controllers
             {
                 return NotFound();
             }
-
-            return View(userCourse);
+            return PartialView(userCourse);
         }
 
         // GET: Users/Edit/5
@@ -108,6 +108,7 @@ namespace KinneretCollegeTimeSheet.Controllers
                         throw;
                     }
                 }
+                ViewData["ShowMessage"] = "עודכן המשתמש בהצלחה";
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -141,7 +142,6 @@ namespace KinneretCollegeTimeSheet.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
-
             //ToDo Un remove - 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
@@ -153,8 +153,6 @@ namespace KinneretCollegeTimeSheet.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-
-
             return PartialView();
         }
 
@@ -167,10 +165,8 @@ namespace KinneretCollegeTimeSheet.Controllers
                 var result = await _userManager.CreateAsync(user, user.CertificateID);
                 if (result.Succeeded)
                 {
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     //_logger.LogInformation("User created a new account with password.");
                     return RedirectToAction(nameof(UsersController.Index), "Users");
